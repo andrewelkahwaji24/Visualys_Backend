@@ -1,7 +1,7 @@
 // In /models/projetSchema.js
 
 const mongoose = require("mongoose");
-const projetSchema = require
+const projetSchema = require ("./projetSchema");
 
 
 // Get all projects
@@ -28,4 +28,5 @@ projetSchema.methods.createProjet = async function (data) {
     }
 };
 
-module.exports = projet;
+const Projet = mongoose.model("Projet", projetSchema);
+module.exports = Projet;

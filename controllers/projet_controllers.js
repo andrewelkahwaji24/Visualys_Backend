@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const projetSchema = require("../models/projetSchema");
 
 // Create the Projet model
-const Projet = mongoose.model("Projet", projetSchema);
+const Projet = require("../models/projet");
 
 // Controller to fetch all projets
 const getAllProjets = async (req, res) => {
