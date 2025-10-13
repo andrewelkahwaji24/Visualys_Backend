@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Hash password avant save
+// Hash password before saving
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   const salt = await bcrypt.genSalt(10);
@@ -22,12 +22,12 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// Vérifier mot de passe
+// Verify password
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// Générer token reset password
+// Generate reset password token
 userSchema.methods.getResetPasswordToken = function () {
   const resetToken = crypto.randomBytes(20).toString("hex");
 
@@ -36,9 +36,12 @@ userSchema.methods.getResetPasswordToken = function () {
     .update(resetToken)
     .digest("hex");
 
-  this.resetPasswordExpire = Date.now() + 60 * 60 * 1000; // 1h
+  this.resetPasswordExpire = Date.now() + 60 * 60 * 1000; // 1 hour
 
   return resetToken;
 };
 
-module.exports = mongoose.model("User", userSchema);
+// 3️⃣ Create and export the model
+const User = mongoose.model("User", userSchema);
+
+module.exports = User;
