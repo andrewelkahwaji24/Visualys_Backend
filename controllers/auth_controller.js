@@ -1,6 +1,5 @@
 const User = require("../models/Utilisateur");
 const generateToken = require("../utils/generateToken");
-const crypto = require("crypto");
 
 const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
