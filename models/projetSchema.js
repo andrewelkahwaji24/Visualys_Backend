@@ -1,4 +1,3 @@
-// models/projetSchema.js
 const mongoose = require("mongoose");
 
 const projetSchema = new mongoose.Schema(
