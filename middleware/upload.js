@@ -8,34 +8,34 @@ if (!fs.existsSync(repertoire_upload)) {
 }
 
 const stockage = multer.diskStorage({
-    destination : function(req , fichier , cb){
-        cb(null , repertoire_upload);
+    destination: function(req, file, cb) {
+        cb(null, repertoire_upload);
     },
-    filename : function(req , file , cb){
+    filename: function(req, file, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const ext = path.extname(fichier.originalname);
-        const nom_fichier_sans_ext = path.basename(fichier.originalname, ext);
-        cb(null , nom_fichier_sans_ext + '-' + uniqueSuffix + ext);
+        const ext = path.extname(file.originalname);
+        const nom_fichier_sans_ext = path.basename(file.originalname, ext);
+        cb(null, nom_fichier_sans_ext + '-' + uniqueSuffix + ext);
     }
 });
 
-const fileFilter = (req , fichier , cb) => {
+const fileFilter = (req, file, cb) => {
     const type_fichiers_valides = ['text/csv', 'application/vnd.ms-excel', 'text/plain'];
-    const ext = path.extname(fichier.originalname).toLowerCase();
+    const ext = path.extname(file.originalname).toLowerCase();
 
-    if (type_fichiers_valides.includes(fichier.mimetype) || ext === '.csv') {
-        cb(null , true);
+    if (type_fichiers_valides.includes(file.mimetype) || ext === '.csv') {
+        cb(null, true);
     } else {
         cb(new Error('Type de fichier non valide'), false);
     }
-}
+};
 
 const upload = multer({
     storage: stockage,
     fileFilter: fileFilter,
     limits: {
-        fileSize: 1024 * 1024 * 5, 
+        fileSize: 1024 * 1024 * 5,
     }
 });
-module.exports = upload;
 
+module.exports = upload;
