@@ -27,8 +27,8 @@ app.use("/api/mail", mailRoutes);
 app.use("/api/fichiers", fichierRoutes);
 
 app.get("/", (req, res) => {
-  res.send("🚀 API running, MongoDB connected");
+  res.send("API running, MongoDB connected");
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
