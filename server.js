@@ -6,7 +6,8 @@ const authRoutes = require("./routes/authRoutes");
 const mailRoutes = require("./routes/mailRoutes");
 const fichierRoutes = require("./routes/fichier_upload");
 const user = require ("./models/Utilisateur");
-
+const projets = require("./models/projet");
+const Fichier = require("./models/Fichier");
 dotenv.config();
 connectDB();
 
@@ -36,6 +37,51 @@ app.get("/api/users/count", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
+app.get("/api/projects/count", async (req, res) => {
+  try {
+    const totalProjects = await projets.countDocuments();
+    res.json({ totalProjects });
+  } catch (err) {
+    console.error("Error in /api/projects/count:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.get("/api/files/count", async (req, res) => {
+  try {
+    const totalFiles = await Fichier.countDocuments();
+    res.json({ totalFiles });
+  } catch (err) {
+    console.error("Error in /api/files/count:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
+app.get("/api/files/total-size", async (req, res) => {
+  try {
+    const result = await Fichier.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalSize: { $sum: "$taille" }
+        }
+      }
+    ]);
+
+    const totalSizeBytes = result[0]?.totalSize || 0;
+
+    const totalSizeMB = (totalSizeBytes / (1024 * 1024)).toFixed(2);
+
+    res.json({ totalSizeMB });
+  } catch (err) {
+    console.error("Error in /api/files/total-size:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
 
 
 app.get("/", (req, res) => {
