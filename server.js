@@ -30,13 +30,17 @@ app.use("/api/fichiers", fichierRoutes);
 
 app.get("/api/users/count", async (req, res) => {
   try {
-    const count = await user.countDocuments();
+    const filter = {};
+    if (req.query.role) filter.role = req.query.role;
+
+    const count = await user.countDocuments(filter);
     res.json({ totalUsers: count });
   } catch (err) {
     console.error("Error in /api/users/count:", err);
     res.status(500).json({ error: "Server error" });
   }
 });
+
 
 app.get("/api/projects/count", async (req, res) => {
   try {
@@ -70,6 +74,8 @@ app.get("/api/files/total-size", async (req, res) => {
       }
     ]);
 
+
+
     const totalSizeBytes = result[0]?.totalSize || 0;
 
     const totalSizeMB = (totalSizeBytes / (1024 * 1024)).toFixed(2);
@@ -80,6 +86,25 @@ app.get("/api/files/total-size", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
+// Route pour récupérer tous les utilisateurs
+app.get("/api/users", async (req, res) => {
+  try {
+    const users = await user.find().select('-password'); // Exclut le mot de passe
+    const formattedUsers = users.map(u => ({
+      id: u._id,
+      name: u.name,
+      email: u.email,
+      role: u.role
+    }));
+    res.json(formattedUsers);
+  } catch (err) {
+    console.error("Error fetching users:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
 
 
 
