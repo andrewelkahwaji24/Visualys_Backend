@@ -8,7 +8,7 @@ const fichierRoutes = require("./routes/fichier_upload");
 const userRoutes = require("./routes/userRoutes");
 const projectRoutes = require("./routes/projectRoutes");
 const fileRoutes = require("./routes/fichier_routes");
-
+const parametresRoutes = require("./routes/ParametresRoutes");
 dotenv.config();
 connectDB();
 
@@ -29,6 +29,8 @@ app.use("/api/fichiers", fichierRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/files", fileRoutes);
+app.use('/api/parametres', parametresRoutes);
+
 
 app.get("/", (req, res) => {
   res.send("API running, MongoDB connected");
