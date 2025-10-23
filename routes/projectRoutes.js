@@ -33,6 +33,31 @@ router.get("/", async (req, res) => {
 });
 
 
+router.post("/creerProjet" , async(req , res) => {
+    try{
+        const { user , description , nom_projet , theme} = req.body
 
+        if (!user || !description || !nom_projet || !theme) {
+            return res.status(400).json({message: "Touts les champs sont requis"});
+        }
+
+        const nouveauProjet = new Projet({
+            user ,
+            description , 
+            nom_projet , 
+            theme
+        });
+
+        const projet_enregistre = await nouveauProjet.save();
+
+        res.status(201).json({
+            message: "Projet creer avec succes",
+            projet: projet_enregistre
+        });
+    } catch(err) {
+        console.error("Erreur POST " , err);
+        res.status(500).json({error: "Erreur lors de la creation d'un projet"})
+    }
+});
 
 module.exports = router;
