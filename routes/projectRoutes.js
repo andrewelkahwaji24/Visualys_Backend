@@ -12,4 +12,15 @@ router.get("/count", async (req, res) => {
   }
 });
 
+router.get("/", async (req, res) => {
+  try {
+    const projets = await Projet.find();
+    res.json(projets);
+  } catch (err) {
+    console.error("Erreur GET /api/projects :", err);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
+
+
 module.exports = router;
