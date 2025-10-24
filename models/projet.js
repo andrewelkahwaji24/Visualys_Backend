@@ -24,5 +24,15 @@ projetSchema.methods.createProjet = async function (data) {
     }
 };
 
+projetSchema.methods.recuperertheme = async function () {
+    try {
+        const themes = await Projet.distinct("theme"); 
+        return themes;
+    }
+    catch (error) {
+        throw new Error("Error retrieving themes: " + error.message);
+    }
+};
+
 const Projet = mongoose.model("Projet", projetSchema);
 module.exports = Projet;
