@@ -10,6 +10,8 @@ const projectRoutes = require("./routes/projectRoutes");
 const fileRoutes = require("./routes/fichier_routes");
 const parametresRoutes = require("./routes/ParametresRoutes");
 const contactRoutes = require('./routes/ContactezNousRoutes');
+const themeRoutes = require("./routes/ThemeRoutes");
+
 
 dotenv.config();
 connectDB();
@@ -33,6 +35,7 @@ app.use("/api/projects", projectRoutes);
 app.use("/api/files", fileRoutes);
 app.use('/api/parametres', parametresRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/themes', themeRoutes);
 
 
 
