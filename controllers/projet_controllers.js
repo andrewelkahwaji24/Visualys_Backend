@@ -39,12 +39,12 @@ const createProjet = async (req, res) => {
 
 const recuperertheme = async (req, res) => {
     try {
-        const themes = await Projet.find({ theme: req.params.theme });
-        res.status(200).json(theme);
+        const themes = await Projet.recuperertheme();
+        res.status(200).json(themes);
     }
     catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
-module.exports = { getAllProjets, getProjetById, createProjet };
+module.exports = { getAllProjets, getProjetById, createProjet, recuperertheme };
