@@ -32,6 +32,16 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/themes", async (req, res) => {
+  try {
+    const themes = await Projet.distinct("theme");
+    res.json({ themes });
+  } catch (err) {
+    console.error("Erreur GET /api/projects/themes :", err);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
+
 
 router.post("/creerProjet" , async(req , res) => {
     try{
