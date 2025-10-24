@@ -60,4 +60,38 @@ router.post("/creerProjet" , async(req , res) => {
     }
 });
 
+router.get("/mesProjets/:userId", async (req, res) => {
+    try {
+        const projets = await Projet.find({ user: req.params.userId });
+        const projetsAvecUtilisateur = [];
+
+        for (let projet of projets) {
+            const userData = await User.findById(projet.user).select("name");
+            const projetObj = projet.toObject();
+            projetObj.user = userData ? userData.name : "Unknown";
+            projetsAvecUtilisateur.push(projetObj);
+        }
+        res.json(projetsAvecUtilisateur);
+    } catch (err) {
+        console.error("Erreur GET /api/projets/mesProjets/:userId :", err);
+        res.status(500).json({ error: "Erreur serveur" });
+    }
+});
+
+router.delete("/:id", async (req, res) => {
+  try {
+    const projetId = req.params.id;
+    const projetSupprime = await Projet.findByIdAndDelete(projetId);
+
+    if (!projetSupprime) {
+      return res.status(404).json({ message: "Projet non trouvé" });
+    }
+
+    res.json({ message: "Projet supprimé avec succès", projet: projetSupprime });
+  } catch (err) {
+    console.error("Erreur DELETE /api/projects/:id :", err);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
+
 module.exports = router;
