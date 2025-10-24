@@ -1,6 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/Utilisateur");
+const {
+    getConnexionsJour,
+    getConnexionsSemaine,
+    getConnexionsMois
+} = require("../controllers/auth_controller");
+
+router.get("/connections-jour", getConnexionsJour);
+router.get("/connections-semaine", getConnexionsSemaine);
+router.get("/connections-mois", getConnexionsMois);
+
 
 router.get("/count", async (req, res) => {
   try {
